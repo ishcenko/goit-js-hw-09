@@ -12,7 +12,7 @@ function getRandomHexColor() {
       startButton.disabled = true;
       intervalId = setInterval(function() {
         document.body.style.backgroundColor = getRandomHexColor();
-      }, 1);
+      }, 1000);
     });
 
     stopButton.addEventListener('click', function() {
