@@ -3,16 +3,16 @@ const refs = {
     stopButton: document.querySelector('[data-stop]'),
 };
 
-let changeColorsOnClick = null;
+let changeColorsOnClickStopStart = null;
 
 
 refs.startButton.addEventListener('clic', () => {
     changeColorsOnClick();
-    changeColorsOnClick = setInterval(changeColorsOnClick, 1000);
+    changeColorsOnClickStopStart = setInterval(changeColorsOnClick, 1000);
     refs.startButton.setAttribute('disabled', true);
 });
 refs.stopButton.addEventListener('clic', () => {
-    clearInterval(changeColorsOnClick);
+    clearInterval(changeColorsOnClickStopStart);
     refs.startButton.removeAttribute('disabled');
 });
 
