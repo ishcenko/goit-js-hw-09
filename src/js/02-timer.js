@@ -61,7 +61,7 @@ flatpickr(dateTimePicker, {
     minuteIncrement: 1,
     onClose(selectedDates) {
         const selectedDate = selectedDates[0];
-        const currentDate new Date();
+        const currentDate = new Date();
 
         if (selectedDate <= currentDate) {
             alert("Please choose a date in the future.");
@@ -69,7 +69,7 @@ flatpickr(dateTimePicker, {
         } else {
             startButton.disabled = false;
         };
-    };
+    }
 });
 // натискання на кнопку старт
 startButton.addEventListener('click', () => {
