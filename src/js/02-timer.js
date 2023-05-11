@@ -2,11 +2,11 @@ import flatpickr from "flatpickr";
 import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
-const chooseInput = document.querySelector('#datetime-picker')
-const timerDays = document.querySelector('[data-days]');
-const timerHours = document.querySelector('[data-hours]');
-const timerMinutes = document.querySelector('[data-minutes]');
-const timerSeconds = document.querySelector('[data-seconds]');
+const formInput = document.querySelector('#datetime-picker')
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
 const startBtn = document.querySelector('[data-start]')
 
 startBtn.disabled = true
@@ -25,14 +25,14 @@ const options = {
     }
   },
 };
-flatpickr(chooseInput, options);
+flatpickr(formInput, options);
 
 const timer = {
   intervalId: null,
   futureDate: null,
 
   start() {
-    this.futureDate = new Date(chooseInput.value).getTime();
+    this.futureDate = new Date(formInput.value).getTime();
     if (!this.futureDate) {
       return
     }
@@ -49,7 +49,6 @@ const timer = {
       console.log(time)
 
       updateClocktime(time);
-      // console.log(`${time.days}:${time.hours}:${time.minutes}:${time.seconds}`);
     }, 1000);
   },
 }
@@ -73,10 +72,10 @@ function addLeadingZero(value) {
 }
 
 function updateClocktime({ days, hours, minutes, seconds }) {
-  timerDays.textContent = days;
-  timerHours.textContent = hours;
-  timerMinutes.textContent = minutes;
-  timerSeconds.textContent = seconds;
+  daysEl.textContent = days;
+  hoursEl.textContent = hours;
+  minutesEl.textContent = minutes;
+  secondsEl.textContent = seconds;
 }
 startBtn.addEventListener('click', () => {
   timer.start();
