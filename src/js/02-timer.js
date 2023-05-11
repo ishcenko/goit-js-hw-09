@@ -1,77 +1,83 @@
 import flatpickr from "flatpickr";
+import Notiflix from "notiflix";
 import "flatpickr/dist/flatpickr.min.css";
 
-// ведучий нуль до числа
-function addLeadingZero(value) {
-  return value.toString().padStart(2, '0');
-}
-
-// підрахунок значення таймера
-function updateTimer(endDate) {
-  const currentDate = new Date();
-  const timeDifference = endDate - currentDate;
-
-  if (timeDifference <= 0) {
-    clearInterval(timerInterval);
-    alert("Please choose a date in the future.");
-    return;
-  }
-
-  const { days, hours, minutes, seconds } = convertMs(timeDifference);
-
-  const daysElement = document.querySelector('[data-days]');
-  const hoursElement = document.querySelector('[data-hours]');
-  const minutesElement = document.querySelector('[data-minutes]');
-  const secondsElement = document.querySelector('[data-seconds]');
-
-  daysElement.textContent = addLeadingZero(days);
-  hoursElement.textContent = addLeadingZero(hours);
-  minutesElement.textContent = addLeadingZero(minutes);
-  secondsElement.textContent = addLeadingZero(seconds);
-}
-
-// Функція підрахунку значень часу
-function convertMs(ms) {
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-
-  const days = Math.floor(ms / day);
-  const hours = Math.floor((ms % day) / hour);
-  const minutes = Math.floor(((ms % day) % hour) / minute);
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-  return { days, hours, minutes, seconds };
-}
-// елементи 
+const formInput = document.querySelector('#datetime-picker');
+const daysElement = document.querySelector('[data-days]');
+const hoursElement = document.querySelector('[data-hours]');
+const minutesElement = document.querySelector('[data-minutes]');
+const secondsElement = document.querySelector('[data-seconds]');
 const startButton = document.querySelector('[data-start]');
-const dateTimePicker = document.getElementById('datetime-picker');
-let timerInterval;
 
-// Ініціалізація flatpickr
-flatpickr(dateTimePicker, {
+startButton.disabled = true;
+
+const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
-    const currentDate = new Date();
-    if (selectedDate <= currentDate) {
-      alert("Please choose a date in the future.");
-      startButton.disabled = true;
+    const pickedDate = selectedDates[0];
+    if (pickedDate && pickedDate > new Date()) {
+      startBtn.removeAttribute('disabled');
     } else {
-      startButton.disabled = false;
+      Notiflix.Notify.failure('Please choose a date in the future');
     }
   },
-});
+};
+flatpickr(formInput, options);
 
-// натискання на кнопку старт
-startButton.addEventListener('click', () => {
-  const selectedDate = flatpickr.parseDate(dateTimePicker.value);
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    updateTimer(selectedDate);
-  }, 1000);
-});
+const timer = {
+  intervalId: null,
+  futureDate: null,
+
+  start() {
+    this.futureDate = new Date(formInput.value).getTime();
+    if (!this.futureDate) {
+      return
+    }
+    startButton.disabled = false
+    this.intervalId = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const diference = this.futureDate - currentTime;
+
+      if (diference <= 0) {
+        clearInterval(this.intervalId);
+        return
+      }
+      const time = convertMs(diference);
+      console.log(time)
+
+      updateClocktime(time);
+    }, 1000);
+  },
+}
+
+function convertMs(diference) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  
+  const days = addLeadingZero(Math.floor(diference / day));
+  const hours = addLeadingZero(Math.floor((diference % day) / hour));
+  const minutes = addLeadingZero(Math.floor(((diference % day) % hour) / minute));
+  const seconds = addLeadingZero(Math.floor((((diference % day) % hour) % minute) / second));
+
+  return { days, hours, minutes, seconds };
+}
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
+
+function updateClocktime({ days, hours, minutes, seconds }) {
+  daysElement.textContent = days;
+  hoursElement.textContent = hours;
+  minutesElement.textContent = minutes;
+  secondsElement.textContent = seconds;
+}
+startBtn.addEventListener('click', () => {
+  timer.start();
+  startBtn.disabled = true
+})
