@@ -21,6 +21,11 @@ function handleFormSubmit(event) {
   const step = parseInt(form.step.value);
   const amount = parseInt(form.amount.value);
 
+  if (delay < 0 || step < 0 || amount < 0) {
+    Notiflix.Notify.failure('❌ Please enter only positive values');
+    return;
+  }
+
   for (let i = 1; i <= amount; i++) {
     const position = i;
     const promiseDelay = delay + (i - 1) * step;
