@@ -8,9 +8,7 @@ const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 const startBtn = document.querySelector('[data-start]');
-// const inputElement = document.getElementById('datetime-picker');
 
-// formInput.disabled = true;
 
 startBtn.disabled = true
 
@@ -28,33 +26,46 @@ const options = {
     }
   },
 };
+formInput.disabled = true;
+
 flatpickr(formInput, options);
 
 const timer = {
   intervalId: null,
   futureDate: null,
+  isRunning: false,
 
   start() {
     this.futureDate = new Date(formInput.value).getTime();
     if (!this.futureDate) {
-      return
+      return;
     }
-    startBtn.disabled = false
+    this.isRunning = true; 
+    formInput.disabled = true; 
+    startBtn.disabled = true;
     this.intervalId = setInterval(() => {
       const currentTime = new Date().getTime();
-      const diference = this.futureDate - currentTime;
+      const difference = this.futureDate - currentTime;
 
-      if (diference <= 0) {
+      if (difference <= 0) {
         clearInterval(this.intervalId);
-        return
+        this.isRunning = false; 
+        formInput.disabled = false; 
+        startBtn.disabled = false;
+        return;
       }
-      const time = convertMs(diference);
-      console.log(time)
 
+      const time = convertMs(difference);
       updateClocktime(time);
     }, 1000);
   },
-}
+};
+
+startBtn.addEventListener('click', () => {
+  if (!timer.isRunning) { 
+    timer.start();
+  }
+});
 
 function convertMs(diference) {
   const second = 1000;
