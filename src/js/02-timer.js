@@ -82,6 +82,6 @@ function updateClocktime({ days, hours, minutes, seconds }) {
 }
 startBtn.addEventListener('click', () => {
   timer.start();
-  formInput.disabled = true;
+  // formInput.disabled = true;
   startBtn.disabled = true
 })
