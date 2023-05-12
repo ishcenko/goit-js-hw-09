@@ -80,7 +80,16 @@ function updateClocktime({ days, hours, minutes, seconds }) {
   minutesEl.textContent = minutes;
   secondsEl.textContent = seconds;
 }
+// startBtn.addEventListener('click', () => {
+//   timer.start();
+//   startBtn.disabled = true
+// })
+
 startBtn.addEventListener('click', () => {
-  timer.start();
-  startBtn.disabled = true
-})
+  if (!timer.intervalId) { 
+    formInput.disabled = true;
+    timer.start();
+    startBtn.disabled = true
+
+  }
+});
