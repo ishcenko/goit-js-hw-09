@@ -10,7 +10,7 @@ const secondsEl = document.querySelector('[data-seconds]');
 const startBtn = document.querySelector('[data-start]');
 // const inputElement = document.getElementById('datetime-picker');
 
-formInput.disabled = true;
+// formInput.disabled = true;
 
 startBtn.disabled = true
 
@@ -82,5 +82,6 @@ function updateClocktime({ days, hours, minutes, seconds }) {
 }
 startBtn.addEventListener('click', () => {
   timer.start();
+  formInput.disabled = true;
   startBtn.disabled = true
 })
