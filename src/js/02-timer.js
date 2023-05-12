@@ -2,12 +2,15 @@ import flatpickr from "flatpickr";
 import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
-const formInput = document.querySelector('#datetime-picker')
+const formInput = document.querySelector('#datetime-picker');
 const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
-const startBtn = document.querySelector('[data-start]')
+const startBtn = document.querySelector('[data-start]');
+const inputElement = document.getElementById('datetime-picker');
+
+inputElement.disabled = true;
 
 startBtn.disabled = true
 
